@@ -7,7 +7,7 @@ export default function Hero() {
         <h3 className="text-left font-SpaceMono text-[26px] font-bold text-black dark:text-white">
           devfinder
         </h3>
-        <div className="mx-[110px] md:mx-[359px] 2xl:mx-[515px]">
+        <div className="mx-[100px] md:mx-[359px] 2xl:mx-[515px]">
           <ModeToggle />
         </div>
       </div>
