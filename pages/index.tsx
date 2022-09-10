@@ -11,7 +11,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="mx-auto min-h-screen flex-col items-center bg-white dark:bg-[#141D2F]">
+      <main className="mx-auto min-h-screen flex-col items-center overflow-hidden bg-white dark:bg-[#141D2F]">
         <Hero />
       </main>
 
