@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import ModeToggle from "../components/ModeToggle";
-import styles from "../styles/Home.module.css";
+import Hero from "../components/Hero";
 
 const Home: NextPage = () => {
   return (
@@ -13,13 +11,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex-col h-screen bg-white dark:bg-black items-center">
-        <div className="flex">
-          <h1 className="mx-auto text-3xl font-bold underline text-black dark:text-white">
-            Init for dark mode
-          </h1>
-          <ModeToggle />
-        </div>
+      <main className="mx-auto min-h-screen flex-col items-center bg-white dark:bg-[#141D2F]">
+        <Hero />
       </main>
 
       <footer></footer>
