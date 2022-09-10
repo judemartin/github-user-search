@@ -69,7 +69,7 @@ export default function ModeToggle() {
       </h2>
       <h2 className="flex pl-[12px] font-SpaceMono text-[13px] font-bold uppercase tracking-[2px] text-[#697C9A] group-hover:text-[#222731] dark:hidden">
         Dark
-        <MoonIcon className="mx-4 bg-red-50 fill-[#697C9A] group-hover:fill-[#222731]  dark:hidden" />
+        <MoonIcon className="mx-4 bg-red-50 fill-[#697C9A] group-hover:fill-[#222731] dark:hidden" />
       </h2>
     </button>
   );
