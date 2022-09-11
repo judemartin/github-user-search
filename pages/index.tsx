@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Hero from "../components/Hero";
+import Profile from "../components/Profile";
 
 const Home: NextPage = () => {
   return (
@@ -11,10 +12,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="mx-auto min-h-screen flex-col items-center overflow-hidden bg-white dark:bg-[#141D2F]">
+      <main className="mx-auto min-h-screen flex-col items-center overflow-hidden bg-[#F5F7FF] dark:bg-[#141D2F]">
         <Hero />
+        <Profile />
       </main>
-
       <footer></footer>
     </div>
   );
