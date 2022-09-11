@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SVGProps } from "react";
 
 function Search(props: SVGProps<SVGSVGElement>) {
@@ -64,8 +65,15 @@ export default function Profile() {
       <div className="mx-auto mt-4 mb-[79px] h-[517px] w-[327px] rounded-2xl bg-[#FFFFFF] dark:bg-[#1E2A47] md:mb-[236px]  md:mt-6 md:h-[481px] md:w-[573px] 2xl:mb-[145px] 2xl:mt-6 2xl:h-[444px] 2xl:w-[730px]">
         <div className="pt-8" />
         {/* Profile Image and Description Mobile Tablet */}
-        <div className="mt-1 ml-6 flex h-[70px] w-[233px] space-x-5 md:ml-10 md:h-[117px]  md:w-[334px] md:space-x-10 2xl:hidden">
-          <div className="h-[70px] w-[70px] rounded-full bg-orange-50 md:h-[117px] md:w-[117px]"></div>
+        <div className="mt-1 ml-6 flex h-[70px] w-[233px] space-x-5 md:ml-10 md:h-[117px] md:w-[334px] md:space-x-10 2xl:hidden">
+          <div className="relative h-[70px] w-[70px] md:h-[117px] md:w-[117px]">
+            <Image
+              className="rounded-full"
+              src={"/octacat.png"}
+              layout="fill"
+            />
+          </div>
+
           <div className="flex-col">
             <h2 className="font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[26px]">
               The Octocat
@@ -141,7 +149,14 @@ export default function Profile() {
 
         {/*Profile Image and Description  Laptop */}
         <div className="hidden 2xl:ml-12 2xl:flex 2xl:h-[135px] 2xl:w-[634px] 2xl:space-x-[37px]">
-          <div className="rounded-full bg-orange-50 2xl:h-[117px] 2xl:w-[117px]"></div>
+          {/* <div className="rounded-full bg-orange-50 2xl:h-[117px] 2xl:w-[117px]"></div> */}
+          <div className="relative h-[117px] w-[117px]">
+            <Image
+              className="rounded-full"
+              src={"/octacat.png"}
+              layout="fill"
+            />
+          </div>
           <div className="h-[135px] w-[480px]">
             <div className="flex space-x-[138px]">
               <div>
