@@ -152,6 +152,7 @@ export default function Profile() {
           {/* <div className="rounded-full bg-orange-50 2xl:h-[117px] 2xl:w-[117px]"></div> */}
           <div className="relative h-[117px] w-[117px]">
             <Image
+              loading="eager"
               className="rounded-full"
               src={"/octacat.png"}
               layout="fill"
