@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { SVGProps } from "react";
+import { SVGProps, useEffect, useState } from "react";
+const axios = require("axios").default;
 
 function Search(props: SVGProps<SVGSVGElement>) {
   return (
@@ -49,16 +50,72 @@ function Company(props: SVGProps<SVGSVGElement>) {
   );
 }
 export default function Profile() {
+  const [name, setName] = useState<string>();
+  const [userName, setUserName] = useState<string>();
+  const [joined, setJoined] = useState<string>();
+  const [bio, setBio] = useState<string>();
+  const [repo, setRepo] = useState<number>();
+  const [followers, setFollowers] = useState<number>();
+  const [following, setFollowing] = useState<number>();
+  const [location, setLocation] = useState<string>();
+  const [website, setWebsite] = useState<string>();
+  const [twitter, setTwitter] = useState<string>();
+  const [company, setCompany] = useState<string>();
+
+  const [searchUser, setSearchUser] = useState<string>("");
+
+  function defaultState() {
+    setName("The Octocat");
+    setUserName("octocat");
+    setJoined("Joined 25 Jan 2011");
+    setBio(
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros."
+    );
+    setRepo(8);
+    setFollowers(3938);
+    setFollowing(9);
+    setLocation("San Francisco");
+    setWebsite("https://github.blog");
+    setTwitter("Not Available");
+    setCompany("@github");
+  }
+  async function getUserInfo(userName: string) {
+    try {
+      const response = await axios.get(
+        `https://api.github.com/users/${userName}`
+      );
+      const data = response.data;
+      console.log({ data });
+    } catch (err) {
+      console.log("err");
+      defaultState();
+    }
+  }
+
+  useEffect(() => {
+    defaultState();
+    getUserInfo("");
+  }, []);
+
+  useEffect(() => {
+    console.log({ searchUser });
+  }, [searchUser]);
+
   return (
     <>
       <div className="mx-auto mt-9 flex h-[60px] w-[327px] items-center rounded-2xl bg-[#FFFFFF] dark:bg-[#1E2A47] md:h-[69px] md:w-[573px]  2xl:h-[69px] 2xl:w-[730px]">
         <Search className="ml-4 md:ml-8" />
         <input
+          value={searchUser}
           type={"text"}
+          onChange={(e) => setSearchUser(e.target.value)}
           className="ml-[7px] h-[25px] w-[184px] font-SpaceMono text-[13px] font-[200] text-[#4B6A9B] focus:outline-none dark:bg-[#1E2A47] dark:text-white md:ml-6 md:h-[25px] md:w-[254px]"
           placeholder="Search GitHub username…"
         />
-        <button className="bg-[0079FF] ml-[6px] h-[46px] w-[84px] justify-center rounded-xl bg-[#0079FF] font-SpaceMono text-[14px]  font-bold text-white md:ml-[123px] md:h-[50px] md:w-[106px] 2xl:ml-[280px]">
+        <button
+          onClick={() => getUserInfo(searchUser)}
+          className="bg-[0079FF] ml-[6px] h-[46px] w-[84px] justify-center rounded-xl bg-[#0079FF] font-SpaceMono text-[14px]  font-bold text-white md:ml-[123px] md:h-[50px] md:w-[106px] 2xl:ml-[280px]"
+        >
           Search
         </button>
       </div>
@@ -76,19 +133,18 @@ export default function Profile() {
 
           <div className="flex-col">
             <h2 className="font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[26px]">
-              The Octocat
+              {name}
             </h2>
             <h2 className="font-SpaceMono text-[13px] font-normal text-[#0079FF] md:text-[16px]">
-              @octocat
+              {userName}
             </h2>
             <h2 className="font-SpaceMono text-[12.9px] font-normal text-[#697C9A] dark:text-white md:text-[15px]">
-              Joined 25 Jan 2011
+              {joined}
             </h2>
           </div>
         </div>
         <h2 className="mx-auto mt-[33px] w-[279px] font-SpaceMono text-[13px] font-normal text-[#697C9A] dark:text-white md:w-[493px] md:text-[15px] 2xl:hidden">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio.
-          Quisque volutpat mattis eros.
+          {bio}
         </h2>
 
         <div className="mx-6 mt-6 h-[85px] w-[279px] rounded-2xl bg-[#F6F8FF] dark:bg-[#141D2F] md:w-[493px] 2xl:hidden">
@@ -99,7 +155,7 @@ export default function Profile() {
                 Repos
               </h2>
               <h2 className="mt-2  font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[22px]">
-                8
+                {repo}
               </h2>
             </div>
             <div className="flex-col md:ml-[99px]">
@@ -107,7 +163,7 @@ export default function Profile() {
                 Followers
               </h2>
               <h2 className="mt-2 font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[22px]">
-                3938
+                {followers}
               </h2>
             </div>
             <div className="flex-col md:ml-[82px]">
@@ -115,7 +171,7 @@ export default function Profile() {
                 Following
               </h2>
               <h2 className="mt-2 font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[22px]">
-                9
+                {following}
               </h2>
             </div>
           </div>
@@ -124,25 +180,25 @@ export default function Profile() {
           <div className="flex">
             <Location className="fill-[#4B6A9B] dark:fill-white" />
             <h2 className="ml-[19px] font-SpaceMono text-[13px] font-normal text-[#4B6A9B] dark:text-white">
-              San Francisco
+              {location}
             </h2>
           </div>
           <div className="mt-4 flex">
             <Website className="fill-[#4B6A9B] dark:fill-white" />
             <h2 className="ml-[14px] font-SpaceMono text-[13px] font-normal text-[#4B6A9B] dark:text-white">
-              https://github.blog
+              {website}
             </h2>
           </div>
           <div className="mt-4 flex">
             <Twitter className="fill-[#A4B4CC] dark:fill-[#8E94A3]" />
             <h2 className="ml-[14px] font-SpaceMono text-[13px] font-normal text-[#A4B4CC] dark:text-[#8E94A3]">
-              Not Available
+              {twitter}
             </h2>
           </div>
           <div className="mt-4 flex">
             <Company className="fill-[#4B6A9B] dark:fill-white" />
             <h2 className="ml-[14px] font-SpaceMono text-[13px] font-normal text-[#4B6A9B] hover:underline dark:text-white">
-              @github
+              {company}
             </h2>
           </div>
         </div>
@@ -162,19 +218,18 @@ export default function Profile() {
             <div className="flex space-x-[138px]">
               <div>
                 <h2 className="font-SpaceMono  text-[26px] font-bold text-[#2B3442] dark:text-white">
-                  The Octocat
+                  {name}
                 </h2>
                 <h2 className="font-SpaceMono   text-[16px] font-normal text-[#0079FF]">
-                  @octocat
+                  {userName}
                 </h2>
               </div>
               <h2 className="font-SpaceMono text-[15px] font-normal text-[#697C9A] dark:text-white">
-                Joined 25 Jan 2011
+                {joined}
               </h2>
             </div>
             <h2 className="mt-5 font-SpaceMono text-[15px] font-normal text-[#697C9A] dark:text-white">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec
-              odio. Quisque volutpat mattis eros.
+              {bio}
             </h2>
             <div className="mt-8 h-[85px] w-[480px] rounded-2xl bg-[#F6F8FF] dark:bg-[#141D2F]">
               <div className="pt-[10px]" />
@@ -184,7 +239,7 @@ export default function Profile() {
                     Repos
                   </h2>
                   <h2 className="font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[22px]">
-                    8
+                    {repo}
                   </h2>
                 </div>
                 <div className="flex-col">
@@ -192,7 +247,7 @@ export default function Profile() {
                     Followers
                   </h2>
                   <h2 className="font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[22px]">
-                    3938
+                    {followers}
                   </h2>
                 </div>
                 <div className="flex-col">
@@ -200,7 +255,7 @@ export default function Profile() {
                     Following
                   </h2>
                   <h2 className="font-SpaceMono text-[16px] font-bold text-[#2B3442] dark:text-white md:text-[22px]">
-                    9
+                    {following}
                   </h2>
                 </div>
               </div>
@@ -212,13 +267,13 @@ export default function Profile() {
             <div className="flex">
               <Location className="fill-[#4B6A9B] dark:fill-white" />
               <h2 className="ml-[19px] font-SpaceMono text-[15px] font-normal text-[#4B6A9B] dark:text-white">
-                San Francisco
+                {location}
               </h2>
             </div>
             <div className="mt-5 flex">
               <Website className="fill-[#4B6A9B] dark:fill-white" />
               <h2 className="ml-[14px] font-SpaceMono text-[15px] font-normal text-[#4B6A9B] dark:text-white">
-                https://github.blog
+                {website}
               </h2>
             </div>
           </div>
@@ -226,13 +281,13 @@ export default function Profile() {
             <div className="flex">
               <Twitter className="fill-[#A4B4CC] dark:fill-[#8E94A3]" />
               <h2 className="ml-[14px] font-SpaceMono text-[15px] font-normal text-[#A4B4CC] dark:text-[#8E94A3]">
-                Not Available
+                {twitter}
               </h2>
             </div>
             <div className="mt-5 flex">
               <Company className="fill-[#4B6A9B] dark:fill-white" />
               <h2 className="ml-[14px] font-SpaceMono text-[15px] font-normal text-[#4B6A9B] dark:text-white">
-                @github
+                {company}
               </h2>
             </div>
           </div>
