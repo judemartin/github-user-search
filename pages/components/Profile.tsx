@@ -135,7 +135,7 @@ export default function Profile() {
     setWebsite("https://github.blog");
     setTwitter("Not Available");
     setCompany("@github");
-    setAvatar(null);
+    setAvatar("/octacat.png");
   }
   async function getUserInfo(userName: string) {
     try {
