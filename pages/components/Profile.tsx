@@ -49,6 +49,62 @@ function Company(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export interface GithubProfileProps {
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
+  name: string;
+  company: any;
+  blog: string;
+  location: string;
+  email: any;
+  hireable: boolean;
+  bio: any;
+  twitter_username: any;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
+}
+
+const getJoinedAt = (created_at: Date) => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = months[created_at.getMonth()].substring(0, 3);
+  const joinedAt = `${created_at.getDate()} ${month} ${created_at.getFullYear()}`;
+  return joinedAt;
+};
+
 export default function Profile() {
   const [name, setName] = useState<string>();
   const [userName, setUserName] = useState<string>();
@@ -61,6 +117,7 @@ export default function Profile() {
   const [website, setWebsite] = useState<string>();
   const [twitter, setTwitter] = useState<string>();
   const [company, setCompany] = useState<string>();
+  const [avatar, setAvatar] = useState<string>();
 
   const [searchUser, setSearchUser] = useState<string>("");
 
@@ -78,16 +135,42 @@ export default function Profile() {
     setWebsite("https://github.blog");
     setTwitter("Not Available");
     setCompany("@github");
+    setAvatar(null);
   }
   async function getUserInfo(userName: string) {
     try {
-      const response = await axios.get(
-        `https://api.github.com/users/${userName}`
-      );
-      const data = response.data;
-      console.log({ data });
+      const res = await axios.get(`https://api.github.com/users/${userName}`);
+      console.log(res.data);
+      const {
+        name,
+        login,
+        created_at,
+        bio,
+        followers,
+        following,
+        repos_url,
+        twitter_username,
+        avatar_url,
+        location,
+        blog,
+        company,
+      } = res.data;
+
+      console.log(res.data);
+      setName(name);
+      setUserName(login);
+      setJoined(getJoinedAt(new Date(created_at)));
+      setBio(bio);
+      setRepo(repo);
+      setFollowers(followers);
+      setFollowing(following);
+      setAvatar(avatar_url);
+      setCompany(company);
+      setTwitter(twitter ?? "Not Avaiable");
+      setLocation(location);
+      setWebsite(blog);
     } catch (err) {
-      console.log("err");
+      console.log("err" + err);
       defaultState();
     }
   }
@@ -105,19 +188,26 @@ export default function Profile() {
     <>
       <div className="mx-auto mt-9 flex h-[60px] w-[327px] items-center rounded-2xl bg-[#FFFFFF] dark:bg-[#1E2A47] md:h-[69px] md:w-[573px]  2xl:h-[69px] 2xl:w-[730px]">
         <Search className="ml-4 md:ml-8" />
-        <input
-          value={searchUser}
-          type={"text"}
-          onChange={(e) => setSearchUser(e.target.value)}
-          className="ml-[7px] h-[25px] w-[184px] font-SpaceMono text-[13px] font-[200] text-[#4B6A9B] focus:outline-none dark:bg-[#1E2A47] dark:text-white md:ml-6 md:h-[25px] md:w-[254px]"
-          placeholder="Search GitHub username…"
-        />
-        <button
-          onClick={() => getUserInfo(searchUser)}
-          className="bg-[0079FF] ml-[6px] h-[46px] w-[84px] justify-center rounded-xl bg-[#0079FF] font-SpaceMono text-[14px]  font-bold text-white md:ml-[123px] md:h-[50px] md:w-[106px] 2xl:ml-[280px]"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            getUserInfo(searchUser);
+          }}
         >
-          Search
-        </button>
+          <input
+            value={searchUser}
+            type={"text"}
+            onChange={(e) => setSearchUser(e.target.value)}
+            className="ml-[7px] h-[25px] w-[184px] font-SpaceMono text-[13px] font-[200] text-[#4B6A9B] focus:outline-none dark:bg-[#1E2A47] dark:text-white md:ml-6 md:h-[25px] md:w-[254px]"
+            placeholder="Search GitHub username…"
+          />
+          <button
+            onClick={() => getUserInfo(searchUser)}
+            className="bg-[0079FF] ml-[6px] h-[46px] w-[84px] justify-center rounded-xl bg-[#0079FF] font-SpaceMono text-[14px]  font-bold text-white md:ml-[123px] md:h-[50px] md:w-[106px] 2xl:ml-[280px]"
+          >
+            Search
+          </button>
+        </form>
       </div>
       <div className="mx-auto mt-4 mb-[79px] h-[517px] w-[327px] rounded-2xl bg-[#FFFFFF] dark:bg-[#1E2A47] md:mb-[236px]  md:mt-6 md:h-[481px] md:w-[573px] 2xl:mb-[145px] 2xl:mt-6 2xl:h-[444px] 2xl:w-[730px]">
         <div className="pt-8" />
@@ -126,7 +216,7 @@ export default function Profile() {
           <div className="relative h-[70px] w-[70px] md:h-[117px] md:w-[117px]">
             <Image
               className="rounded-full"
-              src={"/octacat.png"}
+              src={avatar ?? "/octacat.png"}
               layout="fill"
             />
           </div>
@@ -210,7 +300,7 @@ export default function Profile() {
             <Image
               loading="eager"
               className="rounded-full"
-              src={"/octacat.png"}
+              src={avatar ?? "/octacat.png"}
               layout="fill"
             />
           </div>
