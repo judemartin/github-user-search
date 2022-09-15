@@ -139,7 +139,9 @@ export default function Profile() {
   }
   async function getUserInfo(userName: string) {
     try {
-      const res = await axios.get(`https://api.github.com/users/${userName}`);
+      const session = window.sessionStorage.getItem("searchUser") ?? "octocat";
+      console.log({ session });
+      const res = await axios.get(`https://api.github.com/users/${session}`);
       console.log(res.data);
       const {
         name,
@@ -154,6 +156,7 @@ export default function Profile() {
         location,
         blog,
         company,
+        public_repos,
       } = res.data;
 
       console.log(res.data);
@@ -161,7 +164,7 @@ export default function Profile() {
       setUserName(login);
       setJoined(getJoinedAt(new Date(created_at)));
       setBio(bio);
-      setRepo(repo);
+      setRepo(public_repos);
       setFollowers(followers);
       setFollowing(following);
       setAvatar(avatar_url);
@@ -171,13 +174,14 @@ export default function Profile() {
       setWebsite(blog);
     } catch (err) {
       console.log("err" + err);
-      defaultState();
+      //defaultState();
     }
   }
 
   useEffect(() => {
     defaultState();
-    getUserInfo("");
+
+    getUserInfo(searchUser);
   }, []);
 
   useEffect(() => {
@@ -190,6 +194,7 @@ export default function Profile() {
         <Search className="ml-4 md:ml-8" />
         <form
           onSubmit={(e) => {
+            window.sessionStorage.setItem("searchUser", searchUser);
             e.preventDefault();
             getUserInfo(searchUser);
           }}
